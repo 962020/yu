@@ -1,0 +1,1157 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="VIP追剧神器 - 用户登录" />
+  <meta name="keywords" content="VIP追剧,用户登录" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;">
+  <title>VIP追剧神器 - 用户登录</title>
+  <style>
+    /* 全局样式和背景效果 */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Microsoft YaHei', Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 动态渐变背景 */
+    .bg-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      animation: gradientBG 15s ease infinite;
+      background-size: 400% 400%;
+    }
+
+    @keyframes gradientBG {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* 粒子效果容器 */
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .login-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 420px;
+      backdrop-filter: blur(15px);
+      animation: fadeInUp 0.6s ease-out;
+      transition: all 0.3s ease;
+    }
+
+    .login-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 页面加载动画 */
+    @keyframes pageLoad {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* Logo脉冲动画 */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+    }
+    
+    /* Logo旋转动画 - 简化版 */
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .login-title {
+      font-size: 2rem;
+      color: #333;
+      margin: 0 0 0.5rem 0;
+      font-weight: bold;
+    }
+
+    .login-subtitle {
+      color: #666;
+      font-size: 1rem;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* 表单组设计 */
+    .form-group {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.75rem;
+      color: #555;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease;
+    }
+
+    .form-group:focus-within label {
+      color: #4a90e2;
+    }
+
+    /* 输入框容器 */
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    /* 输入框图标 */
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      color: #999;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+      pointer-events: none;
+    }
+
+    .form-group:focus-within .input-icon {
+      color: #4a90e2;
+    }
+
+    /* 现代输入框设计 */
+    .form-input {
+      width: 100%;
+      padding: 1.1rem 1rem 1.1rem 3.5rem;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      font-size: 1rem;
+      background: linear-gradient(white, white) padding-box,
+                  linear-gradient(135deg, #667eea, #764ba2) border-box;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-sizing: border-box;
+    }
+
+    .form-input:focus {
+      outline: none;
+      background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) padding-box,
+                  linear-gradient(135deg, #4a90e2, #357abd) border-box;
+      box-shadow: 0 8px 25px rgba(74, 144, 226, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .form-input::placeholder {
+      color: #999;
+      transition: opacity 0.3s ease;
+    }
+
+    .form-input:focus::placeholder {
+      opacity: 0.7;
+    }
+
+    /* 密码切换按钮 */
+    .password-toggle {
+      position: absolute;
+      right: 15px;
+      cursor: pointer;
+      color: #666;
+      font-size: 1.2rem;
+      user-select: none;
+      padding: 8px;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+    
+    /* 输入框提示文本样式 */
+    .input-hint {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 0.5rem;
+      padding-left: 0.5rem;
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+    
+    .form-group:focus-within .input-hint {
+      opacity: 1;
+      color: #4a90e2;
+    }
+
+    .password-toggle:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+      color: #4a90e2;
+    }
+
+    /* 现代登录按钮设计 */
+    .login-button {
+      position: relative;
+      background: linear-gradient(135deg, #4a90e2, #357abd);
+      color: white;
+      border: none;
+      padding: 1.1rem 2rem;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-top: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+      z-index: 1;
+    }
+
+    /* 按钮渐变覆盖层 */
+    .login-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: all 0.6s ease;
+      z-index: -1;
+    }
+
+    /* 悬停效果 */
+    .login-button:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 12px 25px rgba(74, 144, 226, 0.4);
+    }
+
+    /* 悬停时的光效 */
+    .login-button:hover::before {
+      left: 100%;
+    }
+
+    /* 点击效果 */
+    .login-button:active {
+      transform: translateY(-2px) scale(0.98);
+      box-shadow: 0 6px 15px rgba(74, 144, 226, 0.3);
+    }
+
+    /* 禁用状态 */
+    .login-button:disabled {
+      background: linear-gradient(135deg, #ccc, #aaa);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+      opacity: 0.8;
+    }
+
+    /* 按钮加载状态 */
+    .login-button:disabled::before {
+      display: none;
+    }
+
+    /* 错误消息设计增强 */
+    .error-message {
+      background-color: #ffebee;
+      color: #c62828;
+      padding: 1rem;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      display: none;
+      animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border-left: 4px solid #c62828;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(198, 40, 40, 0.1);
+    }
+
+    .error-message::before {
+      content: '⚠️';
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      margin-right: 0.5rem;
+    }
+
+    .error-message {
+      padding-left: 2.5rem;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      perspective: 1000px;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transform-origin: center;
+      animation: rotate 5s linear infinite !important;
+    }
+    
+    /* 为logo容器添加脉冲效果，避免动画冲突 */
+    .logo-container {
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    .logo:hover {
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    /* 平滑过渡类 */
+    .transition-all {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* 缩放动画 */
+    @keyframes scaleIn {
+      from {
+        transform: scale(0.95);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* 错误消息滑入动画增强 */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px) translateX(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) translateX(0);
+      }
+    }
+
+    /* 弹跳效果 */
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-10px);
+      }
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+
+    /* 输入框聚焦时的弹跳效果 */
+    .form-input:focus {
+      animation: bounce 0.5s ease;
+    }
+
+    /* 加载动画增强 */
+    .loading-spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* 按钮内容容器 */
+    .button-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.75rem;
+      transition: gap 0.3s ease;
+    }
+    
+    /* 响应式设计 - 中等屏幕 (平板竖屏) */
+    @media (max-width: 768px) {
+      .login-container {
+        max-width: 90%;
+        margin: 2rem auto;
+        padding: 2rem;
+      }
+      
+      .login-title {
+        font-size: 2rem;
+      }
+      
+      .form-input {
+        font-size: 1rem;
+      }
+      
+      .login-button {
+        font-size: 1rem;
+        padding: 1rem 1.5rem;
+      }
+    }
+
+    /* 响应式设计 - 小屏幕 (大屏手机) */
+    @media (max-width: 480px) {
+      .login-container {
+        margin: 1rem;
+        padding: 1.75rem;
+        border-radius: 15px;
+      }
+
+      .login-title {
+        font-size: 1.8rem;
+      }
+      
+      .login-subtitle {
+        font-size: 0.95rem;
+      }
+
+      .form-input {
+        padding: 1rem 1rem 1rem 3rem;
+        font-size: 0.95rem;
+      }
+      
+      .input-icon {
+        font-size: 1rem;
+        left: 12px;
+      }
+      
+      .password-toggle {
+        right: 12px;
+        font-size: 1.1rem;
+        padding: 6px;
+      }
+      
+      .login-button {
+        font-size: 1rem;
+        padding: 1rem 1.5rem;
+      }
+      
+      .error-message {
+        font-size: 0.9rem;
+        padding: 0.875rem;
+        padding-left: 2.25rem;
+      }
+      
+      .input-hint {
+        font-size: 0.8rem;
+      }
+    }
+    
+    /* 响应式设计 - 极小屏幕 (小屏手机) */
+    @media (max-width: 360px) {
+      .login-container {
+        margin: 0.75rem;
+        padding: 1.5rem;
+        border-radius: 12px;
+      }
+      
+      .login-header {
+        margin-bottom: 1.5rem;
+      }
+      
+      .logo {
+        width: 70px;
+        height: 70px;
+      }
+      
+      .login-title {
+        font-size: 1.6rem;
+      }
+      
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+      
+      .form-input {
+        padding: 0.9rem 0.9rem 0.9rem 2.75rem;
+        font-size: 0.9rem;
+      }
+      
+      .login-button {
+        margin-top: 1.25rem;
+        padding: 0.9rem 1.25rem;
+      }
+      
+      .login-footer {
+        font-size: 0.8rem;
+      }
+    }
+    
+    /* 高对比度和可访问性支持 */
+    @media (prefers-contrast: high) {
+      .login-container {
+        background: white;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      }
+      
+      .form-input {
+        border: 2px solid #333;
+        background: white;
+      }
+    }
+    
+    /* 减少动画支持 */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      
+      .logo {
+        animation: none;
+      }
+      
+      body {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body style="animation: pageLoad 1s ease-out;">
+  <!-- 动态背景容器 -->
+  <div class="bg-container"></div>
+  <div id="particles-js"></div>
+  <div class="login-container">
+    <div class="login-header">
+      <div class="logo-container">
+        <img src="tu/T.png" alt="VIP追剧神器" class="logo">
+      </div>
+      <h1 class="login-title">VIP追剧神器</h1>
+      <p class="login-subtitle">请登录以继续访问</p>
+    </div>
+    
+    <div id="error-message" class="error-message"></div>
+    
+    <form id="login-form" class="login-form">
+      <div class="form-group">
+        <label for="username">用户名 (8位数字+英文)</label>
+        <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input type="text" id="username" name="username" class="form-input" placeholder="8位数字+英文组合" required>
+          </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">密码 (数字+大小写字母)</label>
+        <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="password" name="password" class="form-input" placeholder="包含数字和大小写字母" required>
+            <span class="password-toggle" onclick="togglePasswordVisibility()">👁️</span>
+          </div>
+      </div>
+      
+      <button type="submit" id="login-button" class="login-button transition-all">
+        <div class="button-content">
+          <span id="button-text">登录</span>
+          <div id="loading-spinner" class="loading-spinner"></div>
+        </div>
+      </button>
+    </form>
+    
+    <div class="login-footer">
+      <p>还没有账号？ <a href="#" id="register-link" style="color: #4a90e2; text-decoration: none; font-weight: bold; transition: color 0.3s ease;">立即注册</a></p>
+      © 2025 VIP追剧神器 | 仅供学习使用
+    </div>
+    
+    <!-- 注册模态框 -->
+    <div id="register-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center; animation: fadeIn 0.3s ease;">
+      <div class="register-container" style="background: rgba(255, 255, 255, 0.95); border-radius: 20px; padding: 2.5rem; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); width: 100%; max-width: 420px; backdrop-filter: blur(15px); animation: slideInUp 0.6s ease-out; position: relative;">
+        <button id="close-modal" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666; transition: color 0.3s ease;">×</button>
+        
+        <div class="login-header">
+          <h1 class="login-title">账号注册</h1>
+          <p class="login-subtitle">创建账号以使用VIP追剧神器</p>
+        </div>
+        
+        <div id="register-error-message" class="error-message"></div>
+        
+        <form id="register-form" class="login-form">
+          <div class="form-group">
+            <label for="register-username">用户名 (8位数字+英文)</label>
+            <div class="input-wrapper">
+              <span class="input-icon">👤</span>
+              <input type="text" id="register-username" name="username" class="form-input" placeholder="8位数字+英文组合" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="register-password">密码 (数字+大小写字母)</label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input type="password" id="register-password" name="password" class="form-input" placeholder="包含数字和大小写字母" required>
+          <span class="password-toggle" onclick="toggleRegisterPasswordVisibility()">👁️</span>
+        </div>
+          </div>
+          
+          <button type="submit" id="register-button" class="login-button transition-all">
+            <div class="button-content">
+              <span id="register-button-text">注册</span>
+              <div id="register-loading-spinner" class="loading-spinner"></div>
+            </div>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 粒子效果脚本 -->
+  <script>
+    // 简单的粒子效果实现
+    document.addEventListener('DOMContentLoaded', function() {
+      const particlesJS = document.getElementById('particles-js');
+      const canvas = document.createElement('canvas');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      particlesJS.appendChild(canvas);
+      
+      const ctx = canvas.getContext('2d');
+      const particlesArray = [];
+      
+      // 创建粒子
+      function createParticles() {
+        for (let i = 0; i < 50; i++) {
+          particlesArray.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 3 + 1,
+            speedX: Math.random() * 0.5 - 0.25,
+            speedY: Math.random() * 0.5 - 0.25,
+            opacity: Math.random() * 0.5 + 0.2
+          });
+        }
+      }
+      
+      // 绘制粒子
+      function drawParticles() {
+        for (let i = 0; i < particlesArray.length; i++) {
+          const particle = particlesArray[i];
+          ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      
+      // 更新粒子位置
+      function updateParticles() {
+        for (let i = 0; i < particlesArray.length; i++) {
+          const particle = particlesArray[i];
+          particle.x += particle.speedX;
+          particle.y += particle.speedY;
+          
+          // 边界检测
+          if (particle.x < 0 || particle.x > canvas.width) {
+            particle.speedX *= -1;
+          }
+          if (particle.y < 0 || particle.y > canvas.height) {
+            particle.speedY *= -1;
+          }
+        }
+      }
+      
+      // 动画循环
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        updateParticles();
+        drawParticles();
+        requestAnimationFrame(animate);
+      }
+      
+      // 窗口大小调整
+      window.addEventListener('resize', function() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+      
+      // 初始化
+      createParticles();
+      animate();
+    });
+  </script>
+  
+  <script>
+    // 检查URL参数中是否有错误信息
+    window.addEventListener('load', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const error = urlParams.get('error');
+      if (error) {
+        showError(error);
+      }
+    });
+
+    // 密码显示/隐藏切换
+    function togglePasswordVisibility() {
+      const passwordInput = document.getElementById('password');
+      const passwordToggle = document.querySelector('.password-toggle');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        passwordToggle.textContent = '👁️‍🗨️';
+      } else {
+        passwordInput.type = 'password';
+        passwordToggle.textContent = '👁️';
+      }
+    }
+    
+    // 用户名验证函数 - 8位数且必须包含数字和英文（英文不区分大小写）
+    function validateUsername(username) {
+      // 检查长度是否为8
+      if (username.length !== 8) {
+        return '用户名必须为8位';
+      }
+      
+      // 检查是否包含数字
+      const hasNumber = /\d/.test(username);
+      // 检查是否包含英文（不区分大小写）
+      const hasLetter = /[a-z]/i.test(username);
+      // 检查是否只包含数字和英文
+      const onlyAlphanumeric = /^[a-z\d]+$/i.test(username);
+      
+      if (!hasNumber) {
+        return '用户名必须包含数字';
+      }
+      
+      if (!hasLetter) {
+        return '用户名必须包含英文字母';
+      }
+      
+      if (!onlyAlphanumeric) {
+        return '用户名只能包含数字和英文字母';
+      }
+      
+      return true;
+    }
+    
+    // 密码验证函数 - 必须包含数字和英文（严格区分大小写，即必须同时包含大小写字母）
+    function validatePassword(password) {
+      // 基本验证 - 密码不能为空
+      if (!password) {
+        return '密码不能为空';
+      }
+      
+      // 检查是否包含数字
+      const hasNumber = /\d/.test(password);
+      // 检查是否包含大写字母
+      const hasUpperCase = /[A-Z]/.test(password);
+      // 检查是否包含小写字母
+      const hasLowerCase = /[a-z]/.test(password);
+      // 检查是否只包含数字和英文
+      const onlyAlphanumeric = /^[a-zA-Z\d]+$/.test(password);
+      
+      if (!hasNumber) {
+        return '密码必须包含数字';
+      }
+      
+      if (!hasUpperCase) {
+        return '密码必须包含大写字母';
+      }
+      
+      if (!hasLowerCase) {
+        return '密码必须包含小写字母';
+      }
+      
+      if (!onlyAlphanumeric) {
+        return '密码只能包含数字和英文字母';
+      }
+      
+      // 可以添加密码长度检查（如果需要）
+      if (password.length < 6) {
+        return '密码长度不能少于6位';
+      }
+      
+      return true;
+    }
+
+    // 显示错误信息
+    function showError(message) {
+      const errorElement = document.getElementById('error-message');
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+      
+      // 5秒后自动隐藏错误信息
+      setTimeout(() => {
+        errorElement.style.display = 'none';
+      }, 5000);
+    }
+
+    // 添加实时验证
+    document.getElementById('username').addEventListener('input', function() {
+      const username = this.value;
+      const errorElement = document.getElementById('error-message');
+      
+      // 如果用户开始输入，隐藏之前的错误信息
+      if (errorElement.style.display === 'block') {
+        errorElement.style.display = 'none';
+      }
+      
+      // 实时验证用户名长度
+      if (username.length > 8) {
+        showError('用户名长度不能超过8位');
+      }
+    });
+    
+    document.getElementById('password').addEventListener('input', function() {
+      const errorElement = document.getElementById('error-message');
+      
+      // 如果用户开始输入，隐藏之前的错误信息
+      if (errorElement.style.display === 'block') {
+        errorElement.style.display = 'none';
+      }
+    });
+    
+    // 表单提交处理
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const loginButton = document.getElementById('login-button');
+      const buttonText = document.getElementById('button-text');
+      const loadingSpinner = document.getElementById('loading-spinner');
+      
+      // 使用验证函数进行完整验证
+      const usernameValidation = validateUsername(username);
+      if (usernameValidation !== true) {
+        showError(usernameValidation);
+        return;
+      }
+      
+      const passwordValidation = validatePassword(password);
+      if (passwordValidation !== true) {
+        showError(passwordValidation);
+        return;
+      }
+      
+      // 显示加载状态
+      loginButton.disabled = true;
+      buttonText.textContent = '登录中';
+      loadingSpinner.style.display = 'block';
+      
+      // 发送登录请求
+      fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      })
+      .then(response => {
+        // 恢复按钮状态
+        loginButton.disabled = false;
+        buttonText.textContent = '登录';
+        loadingSpinner.style.display = 'none';
+        
+        if (!response.ok) {
+          throw new Error('登录失败，请检查用户名和密码');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          // 登录成功，跳转到首页
+          window.location.href = '/index.html';
+        } else {
+          showError(data.error || '登录失败，请检查用户名和密码');
+        }
+      })
+      .catch(error => {
+        // 恢复按钮状态
+        loginButton.disabled = false;
+        buttonText.textContent = '登录';
+        loadingSpinner.style.display = 'none';
+        
+        showError(error.message || '登录失败，请稍后再试');
+      });
+    });
+
+    // 增强用户体验：输入框获得焦点时自动隐藏错误信息
+    const inputs = document.querySelectorAll('.form-input');
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        const errorElement = document.getElementById('error-message');
+        errorElement.style.display = 'none';
+      });
+    });
+
+    // 支持回车键提交表单
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        const activeElement = document.activeElement;
+        if (activeElement.tagName === 'INPUT' && activeElement.type !== 'submit') {
+          // 检查当前是在登录表单还是注册表单
+          if (document.getElementById('register-modal').style.display === 'flex') {
+            document.getElementById('register-button').click();
+          } else {
+            document.getElementById('login-button').click();
+          }
+        }
+      }
+      // ESC键关闭模态框
+      if (event.key === 'Escape') {
+        closeRegisterModal();
+      }
+    });
+    
+    // 注册模态框控制
+    document.getElementById('register-link').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('register-modal').style.display = 'flex';
+      // 聚焦到注册表单的用户名输入框
+      setTimeout(() => {
+        document.getElementById('register-username').focus();
+      }, 300);
+    });
+    
+    document.getElementById('close-modal').addEventListener('click', closeRegisterModal);
+    
+    function closeRegisterModal() {
+      document.getElementById('register-modal').style.display = 'none';
+      // 清空错误信息和表单
+      document.getElementById('register-error-message').style.display = 'none';
+      document.getElementById('register-form').reset();
+    }
+    
+    // 点击模态框背景关闭模态框
+    document.getElementById('register-modal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeRegisterModal();
+      }
+    });
+    
+    // 注册密码显示/隐藏切换
+    function toggleRegisterPasswordVisibility() {
+      const passwordInput = document.getElementById('register-password');
+      const passwordToggle = document.querySelector('#register-form .password-toggle');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        passwordToggle.textContent = '👁️‍🗨️';
+      } else {
+        passwordInput.type = 'password';
+        passwordToggle.textContent = '👁️';
+      }
+    }
+    
+    // 显示注册错误信息
+    function showRegisterError(message) {
+      const errorElement = document.getElementById('register-error-message');
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+      
+      // 5秒后自动隐藏错误信息
+      setTimeout(() => {
+        errorElement.style.display = 'none';
+      }, 5000);
+    }
+    
+    // 添加注册表单实时验证
+    document.getElementById('register-username').addEventListener('input', function() {
+      const username = this.value;
+      const errorElement = document.getElementById('register-error-message');
+      
+      // 如果用户开始输入，隐藏之前的错误信息
+      if (errorElement.style.display === 'block') {
+        errorElement.style.display = 'none';
+      }
+      
+      // 实时验证用户名长度
+      if (username.length > 8) {
+        showRegisterError('用户名长度不能超过8位');
+      }
+    });
+    
+    document.getElementById('register-password').addEventListener('input', function() {
+      const errorElement = document.getElementById('register-error-message');
+      
+      // 如果用户开始输入，隐藏之前的错误信息
+      if (errorElement.style.display === 'block') {
+        errorElement.style.display = 'none';
+      }
+    });
+    
+    // 注册表单提交处理
+    document.getElementById('register-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('register-username').value;
+      const password = document.getElementById('register-password').value;
+      const registerButton = document.getElementById('register-button');
+      const buttonText = document.getElementById('register-button-text');
+      const loadingSpinner = document.getElementById('register-loading-spinner');
+      
+      // 使用验证函数进行完整验证
+      const usernameValidation = validateUsername(username);
+      if (usernameValidation !== true) {
+        showRegisterError(usernameValidation);
+        return;
+      }
+      
+      const passwordValidation = validatePassword(password);
+      if (passwordValidation !== true) {
+        showRegisterError(passwordValidation);
+        return;
+      }
+      
+      // 显示加载状态
+      registerButton.disabled = true;
+      buttonText.textContent = '注册中';
+      loadingSpinner.style.display = 'block';
+      
+      // 发送注册请求
+      fetch('/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      })
+      .then(response => {
+        // 恢复按钮状态
+        registerButton.disabled = false;
+        buttonText.textContent = '注册';
+        loadingSpinner.style.display = 'none';
+        
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          // 注册成功，显示成功提示并关闭模态框
+          const errorElement = document.getElementById('register-error-message');
+          errorElement.textContent = data.message;
+          errorElement.style.display = 'block';
+          errorElement.style.backgroundColor = '#e8f5e9';
+          errorElement.style.color = '#2e7d32';
+          errorElement.style.borderLeftColor = '#2e7d32';
+          errorElement.style.backgroundImage = 'url("data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"%232e7d32\"%3E%3Cpath d=\"M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z\"/%3E%3C/svg%3E")';
+          errorElement.style.backgroundRepeat = 'no-repeat';
+          errorElement.style.backgroundPosition = '12px center';
+          
+          // 2秒后关闭模态框
+          setTimeout(() => {
+            closeRegisterModal();
+            // 聚焦到登录表单的用户名输入框
+            document.getElementById('username').focus();
+          }, 2000);
+        } else {
+          showRegisterError(data.error || '注册失败，请稍后再试');
+        }
+      })
+      .catch(error => {
+        // 恢复按钮状态
+        registerButton.disabled = false;
+        buttonText.textContent = '注册';
+        loadingSpinner.style.display = 'none';
+        
+        showRegisterError(error.message || '注册失败，请检查网络连接');
+      });
+    });
+    
+    // 增强用户体验：输入框获得焦点时自动隐藏错误信息
+    const registerInputs = document.querySelectorAll('#register-form .form-input');
+    registerInputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        const errorElement = document.getElementById('register-error-message');
+        errorElement.style.display = 'none';
+      });
+    });
+  </script>
+</body>
+</html>

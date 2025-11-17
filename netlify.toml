@@ -1,0 +1,53 @@
+# filemanager.ai部署配置文件
+# 此文件用于指导部署静态网站，考虑到filemanager.ai不提供SSH或Web终端
+
+[build]
+  # 由于我们使用纯静态网站，不需要构建命令
+  command = ""
+  # 发布目录为当前目录
+  publish = "."
+
+[[redirects]]
+  # 确保首页重定向到正确的入口文件
+  from = "/"
+  to = "/index.html"
+  status = 301
+
+[[redirects]]
+  # 确保应用路由正常工作
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build.processing]
+  # 优化HTML、CSS和JavaScript文件
+  skip = false
+
+[build.processing.html]
+  # 压缩HTML文件
+  pretty_urls = true
+
+[build.processing.css]
+  # 压缩CSS文件
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  # 压缩JavaScript文件
+  bundle = true
+  minify = true
+
+[build.processing.images]
+  # 优化图片文件
+  compress = true
+
+# 缓存控制设置
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*.{js,css,png,jpg,jpeg,gif,ico,svg}"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

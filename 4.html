@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐神器</title>
+    <style>
+        html, body { 
+            height: 100%; 
+            margin: 0; 
+            font-family: 'Microsoft YaHei', Arial, sans-serif; 
+        }
+        
+        /* 背景层：多张图片从小到大渐变轮播 */
+        .bg-container {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transform: scale(1);
+            animation: zoomFade 26s linear infinite;
+        }
+        
+        .bg:nth-child(1) {
+            background-color: #3498db;
+            animation-delay: 0s;
+        }
+        
+        .bg:nth-child(2) {
+            background-color: #2ecc71;
+            animation-delay: 5s;
+        }
+        
+        .bg:nth-child(3) {
+            background-color: #e74c3c;
+            animation-delay: 10s;
+        }
+        
+        .bg:nth-child(4) {
+            background-color: #f39c12;
+            animation-delay: 15s;
+        }
+        
+        .bg:nth-child(5) {
+            background-color: #9b59b6;
+            animation-delay: 20s;
+        }
+        
+        /* 动画 */
+        @keyframes zoomFade {
+            0% {
+                opacity: 0;
+                transform: scale(1);
+            }
+            4% {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+            16% {
+                opacity: 1;
+                transform: scale(1.11);
+            }
+            20% {
+                opacity: 0;
+                transform: scale(1.12);
+            }
+            90% {
+                opacity: 0;
+                transform: scale(1.13);
+            }
+            94% {
+                opacity: 1;
+                transform: scale(1.14);
+            }
+            96% {
+                opacity: 1;
+                transform: scale(1.15);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.16);
+            }
+        }
+        
+        /* 半透明叠加，改善文字可读性 */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .app-container {
+            background-color: rgba(255, 255, 255, 0.09);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .popup {
+            display: block; /* 默认显示弹窗 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            overflow-y: auto;
+        }
+        
+        .popup-content {
+            background-color: rgba(255, 255, 255, 0.85);
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            animation: modalFadeIn 0.3s ease-out;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #333;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .popup-content h2 {
+            text-align: center;
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .popup-content p {
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        .close-btn {
+            padding: 0.8rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #e74c3c;
+            color: white;
+            display: block;
+            width: 100%;
+            margin: 1rem auto 0;
+        }
+        
+        .close-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .app-container {
+                padding: 1.5rem;
+            }
+            
+            .popup-content {
+                margin: 15% auto;
+                padding: 1.5rem;
+                width: 95%;
+            }
+        }
+      
+      /* 图片自适应样式 - 全局 */
+      img {
+          max-width: 100%;
+          height: auto;
+          display: block;
+      }
+      
+      /* 响应式设计 - 移动端优化 */
+      @media (max-width: 768px) {
+          /* 背景图自适应 */
+          .bg {
+              background-size: cover;
+              background-position: center;
+          }
+          
+          /* 主内容区域自适应 */
+          .content {
+              padding: 1rem;
+              padding-top: 70px;
+          }
+          
+          .popup-container {
+              padding: 1rem;
+              margin: 0 0.5rem;
+              width: calc(100% - 2rem);
+          }
+          
+          /* 弹窗内容优化 */
+          .popup-content {
+              padding: 1.2rem;
+          }
+          
+          .popup-title {
+              font-size: 1.3rem;
+          }
+          
+          .popup-text {
+              font-size: 0.95rem;
+          }
+          
+          /* 头像尺寸优化 */
+          .avatar {
+              width: 32px;
+              height: 32px;
+          }
+          
+          /* 导航栏优化 */
+          .nav-container {
+              padding: 0 0.75rem;
+          }
+          
+          .logo {
+              font-size: 1.2rem;
+          }
+          
+          .nav-links li {
+              margin-left: 1rem;
+          }
+      }
+      
+      /* 确保容器不会溢出 */
+      .content, .nav-container, .popup-container, .bg-container {
+          max-width: 100%;
+          overflow-x: hidden;
+      }
+    </style>
+</head>
+<body>
+    <!-- 多张背景图片容器 -->
+    <div class="bg-container">
+        <div class="bg"></div>
+        <div class="bg"></div>
+        <div class="bg"></div>
+        <div class="bg"></div>
+        <div class="bg"></div>
+    </div>
+    
+    <!-- 半透明叠加层 -->
+    <div class="overlay"></div>
+    
+    <div class="container">
+        <div class="app-container">
+            <h1>提示；本案例仅供学习使用，不可作为商业用途！</h1>
+            <!-- 移除了点击触发弹窗的按钮 -->
+            <p style="text-align: center; color: white;">即将跳转myfreemp3</p>
+        </div>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h2>提示</h2>
+            <p>即将跳转</p>
+            <button class="close-btn" onclick="hidePopup()">我知道了</button>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载时自动显示弹窗
+        window.addEventListener('DOMContentLoaded', function() {
+            const popup = document.getElementById('popup');
+            if (popup) {
+                popup.style.display = 'block';
+            }
+            // 防止页面滚动
+            document.body.style.overflow = 'hidden';
+        });
+        
+        function hidePopup() {
+            // 跳转到myfreemp3网站
+            window.location.href = 'https://www.myfreemp3.com.cn';
+        }
+        
+        // 点击弹窗外部关闭弹窗
+        window.addEventListener('click', function(event) {
+            const popup = document.getElementById('popup');
+            if (popup && event.target === popup) {
+                // 跳转到指定网站
+                window.location.href = 'https://www.myfreemp3.com.cn';
+            }
+        });
+        
+        // 简单的消息提示函数（为了确保功能可用）
+        function showMessage(message, type = 'info') {
+            // 创建消息元素
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${type}`;
+            messageEl.textContent = message;
+            
+            // 添加样式
+            messageEl.style.position = 'fixed';
+            messageEl.style.top = '20px';
+            messageEl.style.left = '50%';
+            messageEl.style.transform = 'translateX(-50%)';
+            messageEl.style.padding = '12px 24px';
+            messageEl.style.borderRadius = '4px';
+            messageEl.style.color = 'white';
+            messageEl.style.zIndex = '9999';
+            messageEl.style.opacity = '0';
+            messageEl.style.transition = 'opacity 0.3s';
+            
+            // 根据类型设置背景色
+            if (type === 'success') {
+                messageEl.style.backgroundColor = 'rgba(46, 204, 113, 0.9)';
+            } else if (type === 'error') {
+                messageEl.style.backgroundColor = 'rgba(231, 76, 60, 0.9)';
+            } else {
+                messageEl.style.backgroundColor = 'rgba(52, 152, 219, 0.9)';
+            }
+            
+            // 添加到页面
+            if (document.body) {
+                document.body.appendChild(messageEl);
+                
+                // 显示消息
+                setTimeout(() => {
+                    if (messageEl.parentNode) {
+                        messageEl.style.opacity = '1';
+                    }
+                }, 10);
+                
+                // 3秒后隐藏消息
+                setTimeout(() => {
+                    if (messageEl.parentNode) {
+                        messageEl.style.opacity = '0';
+                        setTimeout(() => {
+                            if (messageEl.parentNode) {
+                                document.body.removeChild(messageEl);
+                            }
+                        }, 300);
+                    }
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>

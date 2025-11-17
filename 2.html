@@ -1,0 +1,1052 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:; frame-src https://jx.xmflv.cc https://jx.bozrc.com https://vip.bljiex.com;">
+  <title>VIP追剧神器</title>
+  <style>
+    html,body { height:100%; margin:0; font-family: 'Microsoft YaHei', Arial, sans-serif; }
+    /* 背景层：多张图片从小到大渐变轮播 */
+    .bg-container {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transform: scale(1);
+      animation: zoomFade 30s linear infinite;
+    }
+    
+    .bg:nth-child(1) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 0s;
+    }
+    
+    .bg:nth-child(2) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 5s;
+    }
+    
+    .bg:nth-child(3) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 10s;
+    }
+    
+    .bg:nth-child(4) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 15s;
+    }
+    
+    .bg:nth-child(5) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 20s;
+    }
+    
+    .bg:nth-child(6) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 25s;
+    }
+    
+    .bg:nth-child(7) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 30s;
+    }
+    
+    .bg:nth-child(8) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 35s;
+    }
+
+        .bg:nth-child(9) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 35s;
+    }
+
+        .bg:nth-child(10) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 35s;
+    }
+
+        .bg:nth-child(11) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 35s;
+    }
+
+        .bg:nth-child(12) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 35s;
+    }
+
+        .bg:nth-child(13) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 35s;
+    }
+
+        .bg:nth-child(14) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 35s;
+    }
+
+        .bg:nth-child(15) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 35s;
+    }
+
+        .bg:nth-child(16) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 35s;
+    }
+
+        .bg:nth-child(17) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 35s;
+    }
+
+        .bg:nth-child(18) {
+      background-image: url('https://bafybeibfvdllrztkg2t26c674ejl3pgdvktutepnr42ncxtmbamfrvx3ty.pinme.dev');
+      animation-delay: 35s;
+    }
+
+
+
+    /* 动画 */
+    @keyframes zoomFade {
+      0% {
+        opacity: 0;
+        transform: scale(1);
+      }
+      4% {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+      16% {
+        opacity: 1;
+        transform: scale(1.11);
+      }
+      20% {
+        opacity: 0;
+        transform: scale(1.12);
+      }
+      90% {
+        opacity: 0;
+        transform: scale(1.13);
+      }
+      94% {
+        opacity: 1;
+        transform: scale(1.14);
+      }
+      96% {
+        opacity: 1;
+        transform: scale(1.15);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.16);
+      }
+    }
+    
+    /* 半透明叠加，改善文字可读性 */
+    .overlay {
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,0.5);
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    /* 导航栏样式 */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+      background-color: rgba(0, 0, 0, 0.1);
+      padding: 0.3rem 0;
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+    
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    
+    .logo {
+      color: rgb(249, 249, 249);
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+    
+    .nav-links li {
+      margin-left: 2rem;
+    }
+    
+    .nav-links a {
+      color: rgb(255, 15, 15);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .nav-links a:hover {
+      color: #01f35a;
+    }
+    
+    /* 圆形旋转头像样式 */
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      position: relative;
+      animation: rotate 10s linear infinite;
+    }
+    
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    /* 页面内容容器 */
+    .content {
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:2rem;
+      z-index:1;
+      position:relative;
+    }
+    
+    /* 主应用容器 - 透明效果 */
+    .app-container {
+      background-color: rgba(255, 255, 255, 0..09);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 100%;
+      margin-top: 60px;
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* 标题样式 */
+    .app-title {
+      text-align: center;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* 输入区域样式 */
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .input-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #fff;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    .input-field {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-radius: 8px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      transition: all 0.3s;
+      background-color: rgba(255, 255, 255, 0.6);
+      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px);
+      color: #333;
+    }
+    
+    .input-field:focus {
+      outline: none;
+      border-color: #4a90e2;
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .input-field:focus {
+      outline: none;
+      border-color: #4a90e2;
+    }
+    
+    .input-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    /* 按钮样式 */
+    .btn {
+      padding: 0.8rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn-primary {
+      background-color: #4a90e2;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #357abd;
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      background-color: #e74c3c;
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #c0392b;
+      transform: translateY(-2px);
+    }
+    
+    .btn-platform {
+      background-color: #3498db;
+      color: white;
+      flex: 1;
+    }
+    
+    .btn-platform:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+    }
+    
+    .btn-platform:nth-child(2) {
+      background-color: #e74c3c;
+    }
+    
+    .btn-platform:nth-child(2):hover {
+      background-color: #c0392b;
+    }
+    
+    .btn-platform:nth-child(3) {      background-color: #2ecc71;    }    
+    .btn-platform:nth-child(3):hover {      background-color: #27ae60;    }
+    .btn-platform:nth-child(4) {      background-color: #fb7299;    }
+    .btn-platform:nth-child(4):hover {      background-color: #fa4b87;    }
+    
+    .btn-play {
+      background-color: #f39c12;
+      color: white;
+      width: 100%;
+      margin-top: 1rem;
+    }
+    
+    .btn-play:hover {
+      background-color: #e67e22;
+      transform: translateY(-2px);
+    }
+    
+    /* 按钮组 */
+    .button-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    /* 文字提示 */
+    .text-tip {
+      text-align: center;
+      color: #fff;
+      margin: 1.5rem 0;
+      font-weight: bold;
+      line-height: 1.5;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* 链接样式 */
+    .group-link {
+      display: block;
+      text-align: center;
+      padding: 1rem;
+      background-color: rgba(255, 255, 255, 0.6);
+      border: 2px solid rgba(74, 144, 226, 0.8);
+      border-radius: 8px;
+      color: #4a90e2;
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: bold;
+      transition: all 0.3s;
+      margin: 1.5rem 0;
+      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px);
+    }
+    
+    .group-link:hover {
+      background-color: #4a90e2;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+    }
+    
+    /* 底部提示 */
+    .footer-tip {
+      text-align: center;
+      color: #fff;
+      font-size: 0.9rem;
+      margin-top: 1.5rem;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* 响应式设计 */
+     @media (max-width: 768px) {
+       .app-container {
+         margin-top: 80px;
+         padding: 1.5rem;
+       }
+       
+       .nav-container {
+         flex-direction: column;
+         gap: 1rem;
+         padding: 0 1rem;
+       }
+       
+       .nav-links {
+         margin: 0;
+         padding: 0;
+       }
+       
+       .nav-links li {
+         margin: 0 0.5rem;
+       }
+       
+       .button-group {
+         flex-wrap: wrap;
+       }
+       
+       .btn-platform {
+         flex: 1 1 calc(50% - 0.25rem);
+       }
+     }
+     
+     /* 图片自适应样式 - 全局 */
+     img {
+         max-width: 100%;
+         height: auto;
+         display: block;
+     }
+     
+     /* 响应式设计 - 移动端优化 */
+     @media (max-width: 768px) {
+         /* 导航栏自适应 */
+         .nav-container {
+             padding: 0 0.75rem;
+         }
+         
+         .logo {
+             font-size: 1.2rem;
+         }
+         
+         /* 内容区域优化 */
+         .content {
+             padding: 1rem;
+             padding-top: 60px;
+         }
+         
+         .app-container {
+             padding: 1rem;
+             margin-top: 50px;
+         }
+         
+         /* 头像尺寸优化 */
+         .avatar {
+             width: 32px;
+             height: 32px;
+         }
+         
+         /* 确保背景图正确显示 */
+         .bg {
+             background-size: cover;
+             background-position: center;
+         }
+     }
+     
+     /* 确保容器不会溢出 */
+     .content, .nav-container, .app-container {
+         max-width: 100%;
+         overflow-x: hidden;
+     }
+   </style>
+  <style>
+    /* 弹窗样式 */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 100;
+      overflow-y: auto;
+    }
+    
+    .modal-content {
+      background-color: rgba(255, 255, 255, 0.85);
+      margin: 10% auto;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      position: relative;
+      animation: modalFadeIn 0.3s ease-out;
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 2px solid #eee;
+    }
+    
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+      margin: 0;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #666;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s;
+    }
+    
+    .close-btn:hover {
+      background-color: #f0f0f0;
+      color: #333;
+    }
+    
+    .modal-body {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      color: #333;
+    }
+    
+    .modal-body ul {
+      padding-left: 1.5rem;
+    }
+    
+    .modal-body li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.8rem;
+    }
+    
+    .btn-close {
+      background-color: #e74c3c;
+      color: white;
+    }
+    
+    .btn-close:hover {
+      background-color: #c0392b;
+    }
+    
+    .btn-confirm {
+      background-color: #4a90e2;
+      color: white;
+    }
+    
+    .btn-confirm:hover {
+      background-color: #357abd;
+    }
+    
+    /* 触发弹窗按钮 */
+    .btn-trigger-modal {
+      background-color: #9b59b6;
+      color: white;
+      margin: 1rem auto;
+      display: block;
+    }
+    
+    .btn-trigger-modal:hover {
+      background-color: #8e44ad;
+    }
+    
+    /* 响应式弹窗设计 */
+    @media (max-width: 768px) {
+      .modal-content {
+        margin: 15% auto;
+        padding: 1.5rem;
+        width: 95%;
+      }
+      
+      .modal-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+      }
+      
+      .modal-footer {
+        flex-direction: column;
+      }
+      
+      .modal-footer .btn {
+        width: 100%;
+      }
+    }
+  </style>
+    <script src="app_control.js"></script>
+</head>
+<body>
+  <!-- 添加导航栏 -->
+  <nav>
+    <div class="nav-container">
+      <a href="https://qm.qq.com/q/GfrVv8cK8m" class="logo">
+        <div class="avatar">
+          <img src="tu/T.png" alt="头像">
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">回到首页欣赏壁纸秀</a></li>
+        <li><a href="https://qm.qq.com/q/OtBvEYiuS4">企鹅反馈</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 多张背景图片容器 -->
+  <div class="bg-container">
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+    <div class="bg"></div>
+  </div>
+  
+  <!-- 半透明叠加层 -->
+  <div class="overlay"></div>
+  
+  <!-- 主要内容 -->
+  <div class="content">
+    <div class="app-container">
+      <!-- 应用标题 -->
+      <h1 class="app-title">VIP追剧神器</h1>
+      
+      <!-- 输入区域 -->
+      <div class="input-group">
+        <label for="videoUrl" class="input-label">输入视频网址：</label>
+        <div class="input-actions">
+          <input type="text" id="videoUrl" class="input-field" placeholder="请输入视频链接...">
+          <button id="clearBtn" class="btn btn-secondary">清空</button>
+        </div>
+      </div>
+      
+      <!-- 平台按钮 -->      
+      <div class="button-group">
+        <button class="btn btn-platform" data-platform="iqy">获取爱奇艺视频链接</button>
+        <button class="btn btn-platform" data-platform="tx">获取腾讯视频链接</button>
+        <button class="btn btn-platform" data-platform="yq">获取优酷视频链接</button>
+    
+      </div>
+      
+      <!-- 播放按钮 -->
+      <button id="playBtn" class="btn btn-play">播放VIP视频</button>
+      
+      <!-- 文字提示 -->
+      <p class="text-tip">欢迎你的反馈和改进宝贵建议！</p>
+      
+      <!-- 企鹅群链接 -->
+      <a href="#" id="groupLink" class="group-link">点击加入企鹅群</a>
+      
+      <!-- 底部提示 -->
+      <p class="footer-tip">提示：乔乔制作！本案例仅供学习使用，不可作为他用。</p>
+      
+      <!-- 弹窗触发按钮 -->
+      <button id="showModalBtn" class="btn btn-trigger-modal">使用说明</button>
+    </div>
+  </div>
+  
+  <!-- 弹窗结构 -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">使用说明</h2>
+        <button id="closeModalBtn" class="close-btn">×</button>
+      </div>
+      <div class="modal-body">
+        <p><strong>1. 直接播放方式：</strong></p>
+        <ul>
+          <li>在输入框中粘贴您想要观看的视频链接</li>
+          <li>点击「播放VIP视频」按钮开始观看</li>
+          <li>或按键盘上的回车键快速播放</li>
+        </ul>
+        
+        <p><strong>2. 平台直达方式：</strong></p>
+        <ul>
+          <li>点击对应平台按钮（爱奇艺、腾讯视频、优酷视频）</li>
+          <li>在新打开的平台页面找到喜欢的视频</li>
+          <li>复制视频链接并粘贴到本工具中播放</li>
+        </ul>
+        
+        <p><strong>3. 注意事项：</strong></p>
+        <ul>
+          <li>本工具仅用于学习交流，请支持正版内容</li>
+          <li>部分视频可能因版权限制无法播放</li>
+          <li>如有问题，请通过企鹅群联系我们</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button id="confirmModalBtn" class="btn btn-confirm">我知道了</button>
+        <button id="closeModalBtnFooter" class="btn btn-close">关闭</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- JavaScript 功能 -->
+  <script>
+    // 直接在前端实现所有功能，无需后端API调用
+    
+    // 清空按钮功能
+    document.getElementById('clearBtn').addEventListener('click', function() {
+      document.getElementById('videoUrl').value = '';
+      document.getElementById('videoUrl').focus();
+    });
+    
+    // 视频平台URL映射 - 直接在前端定义
+    const platforms = {
+      'iqy': 'https://www.iqiyi.com',
+      'tx': 'https://v.qq.com',
+      'yq': 'https://www.youku.com/',
+    
+    };
+    
+    // 企鹅群链接 - 直接在前端定义
+    const qqGroupUrl = 'https://qm.qq.com/q/yF1mG8w2r';
+    
+    // 平台按钮功能
+    document.querySelectorAll('.btn-platform').forEach(button => {
+      button.addEventListener('click', function() {
+        const platform = this.dataset.platform;
+        const url = platforms[platform] || '#';
+        window.open(url, '_blank');
+      });
+    });
+    
+    // 播放按钮功能
+    document.getElementById('playBtn').addEventListener('click', function() {
+      const videoUrl = document.getElementById('videoUrl').value.trim();
+      if (!videoUrl) {
+        alert('请输入视频链接！');
+        return;
+      }
+      
+          // 使用多种通用解析服务，提高解析成功率并减少广告
+      const parsers = [
+        `https://jx.xmflv.cc/?url=${encodeURIComponent(videoUrl)}`,
+        `https://jx.bozrc.com/vip/?url=${encodeURIComponent(videoUrl)}`,
+        `https://vip.bljiex.com/?v=${encodeURIComponent(videoUrl)}`
+      ];
+      let selectedParser = parsers[0];
+      
+      // 创建一个无广告提示的播放页面
+      const parserPage =`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>视频播放器</title>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            body { 
+              margin: 0; 
+              padding: 0; 
+              background: #000; 
+              height: 100vh; 
+              display: flex; 
+              flex-direction: column; 
+            }
+            .header { 
+              background: #333; 
+              color: white; 
+              padding: 10px; 
+              text-align: center; 
+              font-family: Arial, sans-serif; 
+            }
+            .player-container { 
+              flex: 1; 
+              display: flex; 
+              background: #000; 
+              position: relative;
+              overflow: hidden;
+            }
+            
+            /* 移动端全屏优化 */
+            @media screen and (max-width: 768px) {
+              body {
+                -webkit-text-size-adjust: 100%;
+                -webkit-tap-highlight-color: transparent;
+                overscroll-behavior: none;
+              }
+              
+              .header {
+                padding: 8px;
+              }
+              
+              .player-container {
+                min-height: calc(100vh - 80px);
+              }
+              
+              /* 修复iOS Safari底部安全区域 */
+              @supports (padding-bottom: env(safe-area-inset-bottom)) {
+                .tips {
+                  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+                }
+              }
+            }
+            
+            /* 横屏模式优化 */
+            @media screen and (orientation: landscape) and (max-width: 900px) {
+              .player-container {
+                height: calc(100vh - 60px);
+              }
+            }
+            iframe { 
+              flex: 1; 
+              border: none; 
+            }
+            .tips { 
+              color: #fff; 
+              text-align: center; 
+              padding: 10px; 
+              font-family: Arial, sans-serif; 
+              font-size: 14px; 
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h3>VIP视频播放器</h3>
+          </div>
+          <div class="player-container">
+            <iframe id="videoFrame" src="${selectedParser}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; camera; microphone" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" style="width:100%; height:100%;"></iframe>
+          </div>
+          <div class="tips">
+            <p>如果视频无法播放，请尝试刷新页面或更换解析线路</p>
+            <p>在移动设备上，支持上下滑动调节音量，左右滑动调节亮度</p>
+          </div>
+          <script>
+            // 检测页面是否被嵌套，防止被其他网站嵌套
+            if (window.self !== window.top) {
+              window.top.location = window.self.location;
+            }
+            
+            // 移动端全屏优化
+            document.addEventListener('DOMContentLoaded', function() {
+              // 支持iOS Safari全屏
+              const videoFrame = document.getElementById('videoFrame');
+              
+              // 强制横屏提示
+              if (window.innerWidth < window.innerHeight) {
+                const landscapeTip = document.createElement('div');
+                landscapeTip.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.8); color:white; padding:15px 20px; border-radius:10px; z-index:1000; text-align:center;';
+                landscapeTip.innerHTML = '<p>请将设备横屏以获得最佳体验</p>';
+                document.body.appendChild(landscapeTip);
+                setTimeout(() => {
+                  landscapeTip.style.display = 'none';
+                }, 3000);
+              }
+              
+              // 支持系统亮度和音量控制
+              document.addEventListener('touchstart', function(e) {
+                // 允许系统默认的手势控制
+              }, { passive: true });
+              
+              // 修复某些移动浏览器的自动播放问题
+              videoFrame.addEventListener('load', function() {
+                if (typeof videoFrame.contentWindow !== 'undefined' && videoFrame.contentWindow.document) {
+                  // 尝试启用媒体控制
+                  const videos = videoFrame.contentWindow.document.querySelectorAll('video');
+                  videos.forEach(video => {
+                    video.setAttribute('playsinline', '');
+                    video.setAttribute('webkit-playsinline', '');
+                    video.setAttribute('x5-playsinline', '');
+                    video.setAttribute('x-webkit-airplay', 'allow');
+                  });
+                }
+              });
+              
+              // 窗口大小变化时重新调整iframe
+              window.addEventListener('resize', function() {
+                videoFrame.style.width = '100%';
+                videoFrame.style.height = '100%';
+              });
+            });
+            
+            // 禁止右键菜单
+            document.oncontextmenu = function() { return false; };
+            
+            // 禁止F12等开发者工具
+            document.onkeydown = function () {
+                if (window.event && window.event.keyCode == 123) {
+                    alert('禁止使用开发者工具');
+                    event.keyCode=0;
+                    event.returnValue=false;
+                    return false;
+                }
+            };
+          <\/script>
+        </body>
+        </html>
+      `;
+      
+      // 在新窗口中打开自定义播放页面
+      const newWindow = window.open('', '_blank');
+      newWindow.document.write(parserPage);
+      newWindow.document.close();
+    });
+    
+    // 企鹅群链接功能
+    document.getElementById('groupLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      window.open(qqGroupUrl, '_blank');
+    });
+    
+    // 添加回车键触发播放
+    document.getElementById('videoUrl').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        document.getElementById('playBtn').click();
+      }
+    });
+    
+    // 弹窗功能实现
+    const modal = document.getElementById('myModal');
+    const showModalBtn = document.getElementById('showModalBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const closeModalBtnFooter = document.getElementById('closeModalBtnFooter');
+    const confirmModalBtn = document.getElementById('confirmModalBtn');
+    
+    // 显示弹窗
+    showModalBtn.addEventListener('click', function() {
+      modal.style.display = 'block';
+      // 防止页面滚动
+      document.body.style.overflow = 'hidden';
+    });
+    
+    // 关闭弹窗函数
+    function closeModal() {
+      modal.style.display = 'none';
+      // 恢复页面滚动
+      document.body.style.overflow = 'auto';
+    }
+    
+    // 关闭按钮点击事件
+    closeModalBtn.addEventListener('click', closeModal);
+    closeModalBtnFooter.addEventListener('click', closeModal);
+    confirmModalBtn.addEventListener('click', closeModal);
+    
+    // 点击弹窗外部关闭弹窗
+    window.addEventListener('click', function(event) {
+      if (event.target === modal) {
+        closeModal();
+      }
+    });
+    
+    // ESC键关闭弹窗
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && modal.style.display === 'block') {
+        closeModal();
+      }
+    });
+    
+    // 页面加载时自动显示弹窗提示（仅在首次访问）
+    window.addEventListener('DOMContentLoaded', function() {
+      // 检查是否已经显示过弹窗
+      if (!localStorage.getItem('modalShown')) {
+        setTimeout(function() {
+          modal.style.display = 'block';
+          document.body.style.overflow = 'hidden';
+          // 标记弹窗已显示
+          localStorage.setItem('modalShown', 'true');
+        }, 1000); // 1秒后显示
+      }
+    });
+  </script>
+</body>
+</html>
